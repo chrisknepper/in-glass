@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>In-Glass</title>
+		{% if css %}
+		<link rel="stylesheet" href="{{ css }}">
+		{% endif %}	
+	</head>
+	<body>
+		<h1>In-Glass</h1>
+		{% if temp %}
+		<h2>Hey there! This In-Glass instance is currently reading: {{ temp }} &deg; Fahrenheit.</h2>
+		{% else %}
+		<h2>No temperature reading was found.</h2>
+		{% endif %}		
+	</body>
+</html>
