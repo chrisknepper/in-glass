@@ -1,13 +1,13 @@
 In-Glass
 ========
 
-A Python web app which will display the temperature from a TEMPer USB device.
-Currently we just use a placeholder value.
+A Python web app which displays the temperature from a TEMPer USB device.
 
 ##Usage
 
-Execute `python in-glass.py` and visit [127.0.0.1:5000](http://127.0.0.1:5000) in your favorite browser.
-For a JSON output, append `/json` to the URL.
+Execute `sudo python in-glass.py` and visit [127.0.0.1:9000](http://127.0.0.1:9000) in your favorite browser.
+Currently, the root URL displays the fahrenheit reading of the first device, if there is one.
+For a JSON output, append `/json` to the URL. `/json` returns celsius and fahrenheit values for each device.
 
 ##Dependencies
 

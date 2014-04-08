@@ -2,12 +2,15 @@ from flask import Flask, url_for, render_template, jsonify
 from temperusb import TemperHandler
 
 app = Flask(__name__)
-temp = 50 #Temporary dummy value for HTML display
 
 #Output temperature on an HTML page
 @app.route('/')
 def main_page():
-    return render_template('in-glass.html', temp=temp, css=url_for('static', filename='in-glass.css'))
+	temp = 0
+	temps = get_temperatures()
+	if(len(temps) > 0):
+		temp = temps[0].f
+	return render_template('in-glass.html', temp=temp, css=url_for('static', filename='in-glass.css'))
 
 #Output temperature as a json object
 @app.route('/json')
