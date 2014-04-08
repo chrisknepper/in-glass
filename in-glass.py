@@ -1,27 +1,30 @@
 from flask import Flask, url_for, render_template, jsonify
+from temperusb import TemperHandler
+
 app = Flask(__name__)
 
-#In the future, we'll grab the temperature from the thermometer and store it here
-temp = 50
+#Get temperature from temper-python
+th = TemperHandler()
+devs = th.get_devices()
+readings = [] #Building block of an API
+for i, dev in enumerate(devs):
+    readings.append({'device': i,
+                     'c': dev.get_temperature(),
+                     'f': dev.get_temperature(format="fahrenheit"),
+                     })
 
-#Building block of an API
-json_values = [];
-json_values.append(
-		{
-			'temperature': temp,
-		}
-	)
+temp = 50 #Temporary dummy value for HTML display
 
 #Output temperature on an HTML page
 @app.route('/')
-def temperature_page():
+def main_page():
     return render_template('in-glass.html', temp=temp, css=url_for('static', filename='in-glass.css'))
 
 #Output temperature as a json object
 @app.route('/json')
-def temperature_json(reading=json_values):
-    return jsonify(reading=json_values)
+def json_output():
+    return jsonify(readings=readings)
 
 #Only execute when called from the terminal
 if __name__ == '__main__':
-    app.run()
+    app.run(port=9000, debug=True)
