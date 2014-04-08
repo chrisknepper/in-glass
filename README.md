@@ -12,4 +12,4 @@ For a JSON output, append `/json` to the URL. `/json` returns celsius and fahren
 ##Dependencies
 
 [Flask](https://github.com/mitsuhiko/flask), a cool micro-framework thing.
-[TEMPered](https://github.com/edorfaus/TEMPered), a C library which reads values from the TEMPer thermometer.
+[temper-python/temperusb](https://github.com/padelt/temper-python), a Python library which reads values from the TEMPer thermometer.
