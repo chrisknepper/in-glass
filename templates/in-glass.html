@@ -8,11 +8,10 @@
 		{% endif %}	
 	</head>
 	<body>
-		<h1>In-Glass</h1>
-		{% if temp %}
-		<h2>Hey there! This In-Glass instance is currently reading: {{ temp }} &deg; Fahrenheit.</h2>
-		{% else %}
-		<h2>No temperature reading was found.</h2>
-		{% endif %}		
+		<h1>In-Glass > Location Name</h1>
+		<div><h2 id="temperature">--</h2><h3>&deg; F</h3></div>
+		{% if js %}
+		<script src="{{ js }}"></script>
+		{% endif %}
 	</body>
 </html>
