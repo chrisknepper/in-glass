@@ -1,15 +1,35 @@
 /* In-Glass Javascript */
 
 window.onload = function() {
-	var reading = 70; //Dummy values for reading from TEMPer, we should fetch this with Ajax
-	var temperature = 0; //Display number, start at 0
+	var reading, reading_f, reading_c; //Put values from Ajax here
+	var temperature = 0; //The number we display, start at 0
+	var MAX_TEMP, MIN_TEMP;
 	var red = 220, green = 90, blue = 255; //Give initial weight to RGB background color values
 	var display_el = document.querySelector("#temperature");
-	display_el.innerHTML = temperature;
+	var celsius = false;
+	var unit_el = document.querySelector("#unit");
+	$("#unit").on('click', function() {
+		celsius = !celsius;
+		temperature = 0;
+		requestAnimationFrame(animate);
+	})
+
+	getTemperature();
 
 	// CMS helped write this function
 	function updateBackgroundColor() {
-		var MAX_TEMP = 100, MIN_TEMP = 32;
+		if(celsius) {
+			MAX_TEMP = 38, MIN_TEMP = 0;
+			reading = reading_c;
+			unit_el.innerHTML = "C";
+			unit_el.dataset.otherunit = "F";
+		}
+		else {
+			MAX_TEMP = 100, MIN_TEMP = 32;
+			reading = reading_f;
+			unit_el.innerHTML = "F";
+			unit_el.dataset.otherunit = "C";
+		}
 		var tmp_pct = (temperature - MIN_TEMP) / (MAX_TEMP - MIN_TEMP);
 		// Red and blue are inversely related
 		var new_red = red * tmp_pct;
@@ -31,5 +51,11 @@ window.onload = function() {
 		}
 	}
 
-	requestAnimationFrame(animate);
+	function getTemperature() {
+		$.get("/json", function(d) {
+			reading_f = parseInt(d.readings[0].f);
+			reading_c = parseInt(d.readings[0].c);
+			requestAnimationFrame(animate);
+		});
+	}
 }

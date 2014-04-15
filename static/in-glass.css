@@ -18,6 +18,11 @@ h2 {
 
 h3 {
 	font-size: 3em;
+	cursor: pointer;
+}
+
+h3:before {
+	transition: 0.3s linear all;
 }
 
 h2, h3 {
@@ -29,4 +34,17 @@ h2, h3 {
 
 div {
 	text-align: center;
+}
+
+#unit:before {
+	display: block;
+	position: relative;
+	left: 0;
+	content: attr(data-otherunit);
+	pointer-events: none;
+	opacity: 0;
+}
+
+#unit:hover:before {
+	opacity: 1;
 }

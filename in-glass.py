@@ -23,7 +23,7 @@ def get_temperatures():
 		    readings.append({'device': i,
 		                     'c': dev.get_temperature(),
 		                     'f': dev.get_temperature(format="fahrenheit"),
-		                     })
+		                     })	
 	except USBError:
 		readings.append({'device': 0,
 						 'c': 0,

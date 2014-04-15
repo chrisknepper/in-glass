@@ -9,7 +9,8 @@
 	</head>
 	<body>
 		<h1>In-Glass > Location Name</h1>
-		<div><h2 id="temperature">--</h2><h3>&deg; F</h3></div>
+		<div><h2 id="temperature">--</h2><h3>&deg;</h3><h3 id="unit" data-otherunit="C">F</h3></div>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		{% if js %}
 		<script src="{{ js }}"></script>
 		{% endif %}
