@@ -16,6 +16,23 @@ def main_page():
 def json_output():
     return jsonify(readings=get_temperatures())
 
+@app.route('/json/<device>/<year>/<month>/<day>')
+def json_history_output(device, year, month, day):
+	file = build_log_path(device, year, month, day)
+	history = []
+	if(os.path.exists(file)):
+		with open(file, 'r') as log:
+			log_read = csv.reader(log)
+			for row in log_read:
+				history.append({
+								'hour': row[0],
+								'minute': row[1],
+								'f': row[2],
+								'c': row[3]
+								})
+			log.close()
+	return jsonify(logs=history)
+
 #A log for 4-20-2014 for the 0th sensor should look like logs/0/2014/4/20.csv
 def build_log_path(device, year, month, day):
 	return 'logs/' + str(device) + '/' + str(year) + '/' + str(month) + '/' + str(day) + '.csv'
@@ -48,10 +65,12 @@ def setInterval(interval):
         return wrapper
     return decorator
 
-#Log the temperature every 15 minutes
+@setInterval(900) #Log the temperature every 15 minutes
+def logging_init():
+	log_temperatures()
+
 #Store as a CSV file
-@setInterval(900)
-def store_temperatures():
+def log_temperatures():
 	year = datetime.today().year
 	month = datetime.today().month
 	day = datetime.today().day
@@ -72,17 +91,23 @@ def store_temperatures():
 def get_temperatures(device = None):
 	readings = [] #Building block of an API
 	devs = get_devices()
-	for i, dev in enumerate(devs):
-		if(device is None or device is i):
-		    readings.append({'device': i,
-		                     'c': dev.get_temperature(),
-		                     'f': dev.get_temperature(format="fahrenheit"),
-		                     })
+	if(len(devs) > 0): #For every device if there is at least 1 connected
+		for i, dev in enumerate(devs):
+			if(device is None or device is i):
+			    readings.append({'device': i,
+			                     'c': dev.get_temperature(),
+			                     'f': dev.get_temperature(format="fahrenheit"),
+			                     })
+	else: #Output a dummy value if no devices are connected
+	    readings.append({'device': 0,
+	                     'c': 20,
+	                     'f': 70
+	                     })
 	return readings
 
-#Start logging
-store_temperatures()
+log_temperatures() #Log the temperatures at start time
+logging_init() #Then do it at our defined interval
 
 #Only execute when called from the terminal
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', port=5000, debug=True)
+	app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
