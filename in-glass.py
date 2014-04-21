@@ -82,7 +82,7 @@ def log_temperatures():
 			os.makedirs(os.path.dirname(log_path))
 		else:
 			log = log + "\n"
-		log = log + str(datetime.today().hour) + ',' + str(datetime.today().minute) + ',' + dev.get_temperature(format="fahrenheit") + ',' + dev.get_temperature()
+		log = log + str(datetime.today().hour) + ',' + str(datetime.today().minute) + ',' + str(dev.get_temperature(format="fahrenheit")) + ',' + str(dev.get_temperature())
 		with open(log_path, 'a') as log_file:
 			log_file.write(log)
 			log_file.close()
