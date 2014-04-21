@@ -24,13 +24,13 @@ def json_history_output(device, year, month, day):
 		with open(file, 'r') as log:
 			log_read = csv.reader(log)
 			for row in log_read:
-				values = row.split(',')
-				history.append({
-								'hour': values[0],
-								'minute': values[1],
-								'f': values[2],
-								'c': values[3]
-								})
+				if(len(row) > 0):
+					history.append({
+									'hour': row[0],
+									'minute': row[1],
+									'f': row[2],
+									'c': row[3]
+									})
 			log.close()
 	return jsonify(logs=history)
 
