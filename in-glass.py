@@ -9,7 +9,7 @@ app = Flask(__name__)
 #Output temperature on an HTML page
 @app.route('/')
 def main_page():
-	return render_template('main.html', css=url_for('static', filename='main.css'), js=url_for('static', filename='main.js'))
+	return render_template('current.html', css=url_for('static', filename='main.css'), js=url_for('static', filename='main.js'))
 
 #History page template
 @app.route('/graph/')
