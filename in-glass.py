@@ -9,13 +9,24 @@ app = Flask(__name__)
 #Output temperature on an HTML page
 @app.route('/')
 def main_page():
-	return render_template('in-glass.html', css=url_for('static', filename='in-glass.css'), js=url_for('static', filename='in-glass.js'))
+	return render_template('main.html', css=url_for('static', filename='main.css'), js=url_for('static', filename='main.js'))
 
-#Output temperature as a json object
-@app.route('/json')
+#History page template
+@app.route('/graph/')
+def graph_page():
+	return render_template('graph.html', css=url_for('static', filename='main.css'), js=url_for('static', filename='main.js'))
+
+#About page template
+@app.route('/about/')
+def about_page():
+	return render_template('about.html', css=url_for('static', filename='main.css'), js=url_for('static', filename='main.js'))
+
+#Output current temperatures for all devices as JSON
+@app.route('/json/')
 def json_output():
     return jsonify(readings=get_temperatures())
 
+#Output logs for a given device and day as JSON
 @app.route('/json/<device>/<year>/<month>/<day>')
 def json_history_output(device, year, month, day):
 	file = build_log_path(device, year, month, day)
