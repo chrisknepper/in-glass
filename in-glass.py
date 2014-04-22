@@ -40,10 +40,12 @@ def build_log_path(device, year, month, day):
 
 #Return list of references to connected TEMPer devices
 def get_devices():
+	devs = None
 	try:
 		th = TemperHandler()
 		devs = th.get_devices()
 	except USBError: #Sometimes the Python driver experiences a kernel detatchment error...
+		sleep(2)
 		get_devices() #So try until we get it (this is probably dangerous!)
 	finally:
 		return devs
@@ -83,7 +85,7 @@ def log_temperatures():
 			os.makedirs(os.path.dirname(log_path))
 		else:
 			log = log + "\n"
-		log = log + str(datetime.today().hour) + ',' + str(datetime.today().minute) + ',' + str(dev.get_temperature(format="fahrenheit")) + ',' + str(dev.get_temperature())
+		log = log + str(datetime.today().hour) + ',' + str(datetime.today().minute) + ',' + str(safe_get_temperature(dev, True)) + ',' + str(safe_get_temperature(dev, False))
 		with open(log_path, 'a') as log_file:
 			log_file.write(log)
 			log_file.close()
@@ -96,8 +98,8 @@ def get_temperatures(device = None):
 		for i, dev in enumerate(devs):
 			if(device is None or device is i):
 			    readings.append({'device': i,
-			                     'c': dev.get_temperature(),
-			                     'f': dev.get_temperature(format="fahrenheit"),
+			                     'c': safe_get_temperature(dev, False),
+			                     'f': safe_get_temperature(dev, True),
 			                     })
 	else: #Output a dummy value if no devices are connected
 	    readings.append({'device': 0,
@@ -105,6 +107,16 @@ def get_temperatures(device = None):
 	                     'f': 70
 	                     })
 	return readings
+
+def safe_get_temperature(device, f = True):
+	try:
+		if(f is True):
+			return device.get_temperature(format="fahrenheit")
+		else:
+			return device.get_temperature()
+	except USBError:
+		sleep(2)
+		safe_get_temperature(device, f)
 
 log_temperatures() #Log the temperatures at start time
 logging_init() #Then do it at our defined interval
