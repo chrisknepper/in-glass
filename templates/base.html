@@ -10,12 +10,12 @@
 		{% endblock %}
 	</head>
 	<body>
-		<h1>In-Glass > {% block page_title %}{% endblock %}</h1>
-		<ul>
-			<li><a href="/">Current</a></li>
-			<li><a href="/graph/">Graph</a></li>
-			<li><a href="/about/">About In-Glass</a></li>
-		</ul>
+		<h1><a href="#" id="nav_button">In-Glass</a> > {% block page_title %}{% endblock %}</h1>
+		<div id="nav">
+			<a href="/">Current</a>
+			<a href="/graph/">Graph</a>
+			<a href="/about/">About In-Glass</a>
+		</div>
 		{% block content %}x
 		{% endblock %}
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>

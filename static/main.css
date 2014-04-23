@@ -10,6 +10,10 @@ h1 {
 	font-weight: 300;
 	font-size: 1.5em;
 	opacity: 0.6;
+	position: absolute;
+	margin: 0;
+	top: 25px;
+	left: 25px;
 }
 
 h2 {
@@ -32,7 +36,34 @@ h2, h3 {
 	text-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
 
+a {
+	color: rgba(0,0,0,0.7);
+	text-decoration: none;
+}
+
 div {
+	transition: 0.3s ease-in all;
+}
+
+#nav {
+	opacity: 0;
+	pointer-events: none;
+	position: absolute;
+	top: 35px;
+	left: 50px;
+}
+
+#nav.visible {
+	opacity: 1;
+	pointer-events: auto;
+	top: 60px;
+}
+
+#nav a {
+	margin-right: 10px;
+}
+
+.content {
 	text-align: center;
 }
 
@@ -47,4 +78,58 @@ div {
 
 #unit:hover:before {
 	opacity: 1;
+}
+
+#settings {
+	background: rgba(0,0,0,0.3);
+	padding: 5px 25px;
+	position: absolute;
+	bottom: 75px;
+	left: 25px;
+	opacity: 0;
+	pointer-events: none;
+}
+
+#settings.visible {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+#settings_button {
+	position: absolute;
+	bottom: 25px;
+	left: 25px;
+	font-size: 2em;
+	color: rgba(255,255,255,0.7);
+}
+
+#settings_button:hover {
+	transform: rotate(-25deg);
+	-webkit-transform:rotate(-25deg); /* I still need this in 2014, really guys? */
+	pointer: cursor;
+}
+
+@font-face {
+	font-family: 'icomoon';
+	src:
+		url('icomoon.woff') format('woff'),
+		url('icomoon.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-cog:before {
+	content: "\e600";
 }

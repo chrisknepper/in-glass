@@ -12,7 +12,17 @@ window.onload = function() {
 		celsius = !celsius;
 		temperature = 0;
 		requestAnimationFrame(animate);
-	})
+	});
+
+	$("#nav_button").on('click', function(e) {
+		e.preventDefault();
+		$("#nav").toggleClass('visible');
+	});
+
+	$("#settings_button").on('click', function(e) {
+		e.preventDefault();
+		$("#settings").toggleClass('visible');
+	});
 
 	getTemperature();
 
