@@ -2,6 +2,7 @@
 
 window.onload = function() {
 	var reading, reading_f, reading_c; //Put values from Ajax here
+	var auto_timer; //A setInterval which calls getTemperature() at an arbitrary interval
 	var temperature = 0; //The number we display, start at 0
 	var MAX_TEMP, MIN_TEMP;
 	var red = 220, green = 90, blue = 255; //Give initial weight to RGB background color values
@@ -24,7 +25,28 @@ window.onload = function() {
 		$("#settings").toggleClass('visible');
 	});
 
+	$("#update_enable").on('change', function(e) {
+		if(e.target.checked) {
+			var time_limit = $("#seconds_count").val();
+			auto_timer = parseInt(time_limit) ? returnTimerObject(parseInt(time_limit)) : returnTimerObject();
+			console.log("Auto-Updating Enabled");
+		}
+		else {
+			if(typeof auto_timer !== null) {
+				clearInterval(auto_timer);
+				auto_timer = null;
+			}
+		}
+	});
+
 	getTemperature();
+
+	function returnTimerObject(limit) {
+		limit = limit || 30;
+		return setInterval(function(){
+			getTemperature();
+		}, limit * 1000);
+	}
 
 	// CMS helped write this function
 	function updateBackgroundColor() {
@@ -62,6 +84,7 @@ window.onload = function() {
 	}
 
 	function getTemperature() {
+		console.log("Fetching temperature");
 		$.get("/json", function(d) {
 			reading_f = parseInt(d.readings[0].f);
 			reading_c = parseInt(d.readings[0].c);

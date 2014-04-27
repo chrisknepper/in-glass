@@ -101,12 +101,12 @@ div {
 	left: 25px;
 	font-size: 2em;
 	color: rgba(255,255,255,0.7);
+	cursor: pointer;
 }
 
 #settings_button:hover {
 	transform: rotate(-25deg);
 	-webkit-transform:rotate(-25deg); /* I still need this in 2014, really guys? */
-	pointer: cursor;
 }
 
 @font-face {
