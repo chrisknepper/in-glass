@@ -143,3 +143,8 @@ a, div {
 .icon-cog:before {
 	content: "\e600";
 }
+
+.tempType{
+	cursor: cursor;
+	color:#FFFFFF;
+}

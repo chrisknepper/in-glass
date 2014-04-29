@@ -15,13 +15,18 @@ window.onload = function() {
 		requestAnimationFrame(animate);
 	});
 
+	$(".tempType").on('click', function(e){
+		var tempType = $(this).text();
+		localStorage.setItem('type',tempType);
+		console.log(localStorage.getItem('type'));
+	});
+
 	$("#nav_button").on('click', function(e) {
 		e.preventDefault();
 		$("#nav").toggleClass('visible');
 	});
 
 	$("#settings_button").on('click', function(e) {
-		e.preventDefault();
 		$("#settings").toggleClass('visible');
 	});
 
