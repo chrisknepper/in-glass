@@ -9,6 +9,18 @@ window.onload = function() {
 	var display_el = document.querySelector("#temperature");
 	var celsius = false;
 	var unit_el = document.querySelector("#unit");
+
+	if(localStorage.getItem('type') != null){
+		var type = localStorage.getItem('type');
+		if(type == 'Celsius'){
+			celsius = true;
+		}else if(type == "Fahrenheit"){
+			celsius = false;
+		}else{
+			celsius = false;
+		}
+	}
+
 	$("#unit").on('click', function() {
 		celsius = !celsius;
 		temperature = 0;
