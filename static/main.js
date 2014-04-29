@@ -14,9 +14,11 @@ window.onload = function() {
 		var type = localStorage.getItem('type');
 		if(type == 'Celsius'){
 			celsius = true;
+			$('#celsiusSelect').css('text-decoration','underline');
 		}else if(type == "Fahrenheit"){
 			celsius = false;
-		}else{
+			$('#fahrenheitSelect').css('text-decoration','underline');
+		}else{//Just a fall back
 			celsius = false;
 		}
 	}
