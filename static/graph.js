@@ -1,4 +1,4 @@
-$.getJSON("example.json", function(data){
+$.getJSON("/json/0/2014/4/29", function(data){
 	var dataArray = [];
 
 	$.each(data.logs, function(key, val){
