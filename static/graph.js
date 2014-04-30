@@ -11,11 +11,8 @@ $.getJSON("/json/0/2014/4/29", function(data){
 });
 
 function setupCanvas(canvas){
-	canvas.style.position="absolute";
-	canvas.style.top="0";
-	canvas.style.left="0";
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight;
+	canvas.width = 1024;
+	canvas.height = 768;
 }
 
 function draw(canvas, data){
