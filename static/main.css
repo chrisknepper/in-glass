@@ -148,3 +148,10 @@ a, div {
 	cursor: pointer;
 	color:#FFFFFF;
 }
+
+#canvasWrapper{
+	width: 66%;
+	height: 66%;
+	left: -33%;
+	top: -33%;
+}
