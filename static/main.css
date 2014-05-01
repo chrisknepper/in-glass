@@ -149,9 +149,16 @@ a, div {
 	color:#FFFFFF;
 }
 
-#canvasWrapper{
-	width: 66%;
-	height: 66%;
-	left: -33%;
-	top: -33%;
+#chart {
+	margin-top: 75px;
+}
+
+#chart rect {
+	fill: steelblue;
+}
+
+#chart text {
+	fill: white;
+	font: 10px sans-serif;
+	text-anchor: middle;
 }

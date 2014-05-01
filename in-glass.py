@@ -14,7 +14,7 @@ def main_page():
 #History page template
 @app.route('/graph/')
 def graph_page():
-	return render_template('graph.html', css=url_for('static', filename='main.css'), js=url_for('static', filename='graph.js'))
+	return render_template('graph.html', css=url_for('static', filename='main.css'), js=url_for('static', filename='main.js'))
 
 #About page template
 @app.route('/about/')
