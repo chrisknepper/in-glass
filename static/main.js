@@ -114,7 +114,7 @@ window.onload = function() {
 		getTemperature();
 	}
 
-	if(typeof document.querySelector("#chart") !== undefined) {
+	if($("#chart").length) {
 
 		function generateDateURL(year, month, day) {
 			return "/json/0/" + String(year) + "/" + String(month) + "/" + String(day); 
@@ -150,6 +150,8 @@ window.onload = function() {
 		var month = current.getMonth() + 1;
 		var day = current.getDay();
 		var url = generateDateURL(year, month, day);
+
+		console.log(url);
 
 		d3.json(url, function(error, json) {
 			data = json.logs;
