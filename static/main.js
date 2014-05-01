@@ -148,7 +148,7 @@ window.onload = function() {
 		var current = new Date();
 		var year = current.getFullYear();
 		var month = current.getMonth() + 1;
-		var day = current.getDay();
+		var day = current.getDate();
 		var url = generateDateURL(year, month, day);
 
 		console.log(url);
