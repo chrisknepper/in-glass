@@ -7,7 +7,7 @@ window.onload = function() {
 		$("#nav").toggleClass('visible');
 	});
 
-	if(typeof document.querySelector("#settings") !== undefined) {
+	if($("#settings").length) {
 		var reading, reading_f, reading_c; //Put values from Ajax here
 		var auto_timer; //A setInterval which calls getTemperature() at an arbitrary interval
 		var temperature = 0; //The number we display, start at 0
