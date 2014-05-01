@@ -53,13 +53,33 @@ function draw(canvas, data){
 	//draw y axis
 	ctx.fillStyle="#AAAAAA";
 	for(var i=0;i<canvas.height;i+=25){
-			ctx.fillText(""+canvas.height-i,0,i);
+		ctx.fillText(canvas.height-i,2,i);
 	}
 
 	//draw x axis
-	for(var i=0;i<data.length;i+=10){
+	for(var i=0;i<data.length;i+=Math.floor(data.length/10)){
 		var xPos = (canvas.width/data.length)*.5+((canvas.width/data.length)*i);
-		ctx.fillText(data[i].hour+":"+data[i].minute,xPos,canvas.height);
+
+		var xString = "";
+		var text;
+
+		if(data[i].hour>12){
+			xString+=(data[i].hour-12);
+			text = "pm";
+		} else {
+			xString+=(data[i].hour);
+			text="am";
+		}
+
+		if(data[i].minute.toString().length>1){
+			xString+=":";
+		} else {
+			xString+=":0";
+		}
+
+		xString+=data[i].minute+text;
+
+		ctx.fillText(xString,xPos,canvas.height-2);
 	}
 }
 
