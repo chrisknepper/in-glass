@@ -21,7 +21,6 @@ h2 {
 
 h3 {
 	font-size: 3em;
-	cursor: pointer;
 }
 
 h3:before {
@@ -75,19 +74,6 @@ a, div {
 	margin-top: 100px;
 	margin-left: 20px;
 	font-size: 1.2em;
-}
-
-#unit:before {
-	display: block;
-	position: relative;
-	left: 0;
-	content: attr(data-otherunit);
-	pointer-events: none;
-	opacity: 0;
-}
-
-#unit:hover:before {
-	opacity: 1;
 }
 
 #settings {

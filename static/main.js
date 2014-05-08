@@ -30,15 +30,19 @@ window.onload = function() {
 			}
 		}
 
-		$("#unit").on('click', function() {
+
+		$(".tempType").on('click', function(e){
 			celsius = !celsius;
 			temperature = 0;
 			requestAnimationFrame(animate);
-		});
-
-		$(".tempType").on('click', function(e){
 			var tempType = $(this).text();
 			localStorage.setItem('type',tempType);
+			$('#celsiusSelect').css('text-decoration','none');
+			$('#fahrenheitSelect').css('text-decoration','none');
+			if(celsius)
+				$('#celsiusSelect').css('text-decoration','underline');
+			else
+				$('#fahrenheitSelect').css('text-decoration','underline');
 			console.log(localStorage.getItem('type'));
 		});
 
@@ -73,13 +77,11 @@ window.onload = function() {
 				MAX_TEMP = 38, MIN_TEMP = 0;
 				reading = reading_c;
 				unit_el.innerHTML = "C";
-				unit_el.dataset.otherunit = "F";
 			}
 			else {
 				MAX_TEMP = 100, MIN_TEMP = 32;
 				reading = reading_f;
 				unit_el.innerHTML = "F";
-				unit_el.dataset.otherunit = "C";
 			}
 			var tmp_pct = (temperature - MIN_TEMP) / (MAX_TEMP - MIN_TEMP);
 			// Red and blue are inversely related
