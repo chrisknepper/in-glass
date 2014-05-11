@@ -2,9 +2,23 @@
 
 window.onload = function() {
 
+	var current_device = 0; //Index of the thermometer we are interested in, defaults to the first (0th) one
+
 	$("#nav_button").on('click', function(e) {
 		e.preventDefault();
 		$("#nav").toggleClass('visible');
+	});
+
+	$("#device_picker").on('click', function(e) {
+		e.preventDefault();
+		$("#device_list").toggleClass('visible');
+	});
+
+	$(".device_name").on('click', function(e) {
+		e.preventDefault();
+		current_device = $(e.target).data("device");
+		$("#device_picker").text($(e.target).text());
+		getTemperature();
 	});
 
 	if($("#settings").length) {
@@ -33,8 +47,7 @@ window.onload = function() {
 
 		$(".tempType").on('click', function(e){
 			celsius = !celsius;
-			temperature = 0;
-			requestAnimationFrame(animate);
+			getTemperature();
 			var tempType = $(this).text();
 			localStorage.setItem('type',tempType);
 			$('#celsiusSelect').css('text-decoration','none');
@@ -105,10 +118,11 @@ window.onload = function() {
 		}
 
 		function getTemperature() {
+			temperature = 0;
 			console.log("Fetching temperature");
 			$.get("/json", function(d) {
-				reading_f = parseInt(d.readings[0].f);
-				reading_c = parseInt(d.readings[0].c);
+				reading_f = parseInt(d.readings[current_device].f);
+				reading_c = parseInt(d.readings[current_device].c);
 				requestAnimationFrame(animate);
 			});
 		}

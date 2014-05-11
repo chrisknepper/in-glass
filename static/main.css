@@ -9,10 +9,7 @@ body {
 h1 {
 	font-weight: 300;
 	font-size: 1.5em;
-	position: absolute;
 	margin: 0;
-	top: 25px;
-	left: 25px;
 }
 
 h2 {
@@ -47,6 +44,12 @@ a, div {
 	transition: 0.3s ease-in all;
 }
 
+#top_level_nav {
+	position: absolute;
+	top: 25px;
+	left: 25px;
+}
+
 #nav {
 	opacity: 0;
 	pointer-events: none;
@@ -63,6 +66,24 @@ a, div {
 
 #nav a {
 	margin-right: 10px;
+}
+
+#device_list {
+	opacity: 0;
+	pointer-events: none;
+	position: absolute;
+	top: 35px;
+	left: 400px;
+}
+
+#device_list.visible {
+	opacity: 1;
+	pointer-events: auto;
+	top: 60px;
+}
+
+.device_name {
+	display: block;
 }
 
 .content {

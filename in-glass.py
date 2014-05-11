@@ -1,4 +1,4 @@
-import os, csv
+import os, csv, yaml
 from datetime import datetime
 import threading
 from flask import Flask, url_for, render_template, jsonify
@@ -9,7 +9,7 @@ app = Flask(__name__)
 #Output temperature on an HTML page
 @app.route('/')
 def main_page():
-	return render_template('current.html', css=url_for('static', filename='main.css'), js=url_for('static', filename='main.js'))
+	return render_template('current.html', css=url_for('static', filename='main.css'), js=url_for('static', filename='main.js'), devices=get_temperatures())
 
 #History page template
 @app.route('/graph/')
@@ -56,24 +56,30 @@ def get_temperatures(device = None):
 	try:
 		th = TemperHandler()
 		devs = th.get_devices()
+		config = getConfig()["devices"] #Load config file with device names
 		if(len(devs) > 0): #For every device if there is at least 1 connected
 			for i, dev in enumerate(devs):
 				if(device is None or device is i):
 				    readings.append({'device': i,
 				                     'c': dev.get_temperature(),
 				                     'f': dev.get_temperature(format="fahrenheit"),
+				                     'name': config[i]
 				                     })
 		else: #Output a dummy value if no devices are connected
 		    readings.append({'device': 0,
 		                     'c': 20,
-		                     'f': 70
-		                     })		
+		                     'f': 70,
+		                     'name': config[0]
+		                    })
+		    readings.append({'device': 1,
+		                     'c': 10,
+		                     'f': 45,
+		                     'name': config[1]
+		                    })	
 	except: #Sometimes the Python driver experiences a kernel detatchment error...
 		get_temperatures() #So try until we get it (this is probably dangerous!)
 	finally:
 		return readings
-
-
 
 #Python implementation of JS-like setInterval, as a decorator to another function
 #http://stackoverflow.com/questions/12435211/python-threading-timer-repeat-function-every-n-seconds/16368571#16368571
@@ -117,6 +123,9 @@ def log_temperatures():
 
 log_temperatures() #Log the temperatures at start time
 logging_init() #Then do it at our defined interval
+
+def getConfig():
+	return yaml.load(file(os.path.dirname(os.path.realpath(__file__)) + '/config.yaml'))
 
 #Only execute when called from the terminal
 if __name__ == '__main__':
