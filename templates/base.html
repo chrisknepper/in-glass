@@ -10,10 +10,14 @@
 		{% endblock %}
 	</head>
 	<body>
-		<h1 id="top_level_nav"><a href="#" id="nav_button">In-Glass</a> &gt; {% block page_title %}{% endblock %} &gt; <a href="#" id="device_picker">{{ devices[0].name }}</a></h1>
+		<h1 id="top_level_nav">In-Glass &gt; <a href="#" id="nav_button">{% block page_title %}{% endblock %}</a>
+		{% if devices %}
+		&gt; <a href="#" id="device_picker">{{ devices[0].name }}</a>
+		{% endif %}
+		</h1>
 		<div id="device_list">
 			{% for device in devices %}
-				<span class="device_name" data-device="{{ device.device }}">{{ device.name }}</span>
+				<a href="#" class="device_name" data-device="{{ device.device }}">{{ device.name }}</a>
 			{% endfor %}
 		</div>
 		<div id="nav">

@@ -14,7 +14,7 @@ def main_page():
 #History page template
 @app.route('/graph/')
 def graph_page():
-	return render_template('graph.html', css=url_for('static', filename='main.css'), js=url_for('static', filename='main.js'))
+	return render_template('graph.html', css=url_for('static', filename='main.css'), js=url_for('static', filename='main.js'), devices=get_temperatures())
 
 #About page template
 @app.route('/about/')
@@ -49,33 +49,37 @@ def json_history_output(device, year, month, day):
 def build_log_path(device, year, month, day):
 	return 'logs/' + str(device) + '/' + str(year) + '/' + str(month) + '/' + str(day) + '.csv'
 
+def load_config_file():
+	return yaml.load(file(os.path.dirname(os.path.realpath(__file__)) + '/config.yaml'))
+
 #Return a list of collections containing current temperature reading in C and F for each TEMPer device or a specific one by its ID
 def get_temperatures(device = None):
 	devs = None
 	readings = [] #Building block of an API
+	dev_info = load_config_file()['devices'] #We store a human-readable identification (aka a name) for each device in config.yaml
 	try:
 		th = TemperHandler()
 		devs = th.get_devices()
-		config = getConfig()["devices"] #Load config file with device names
 		if(len(devs) > 0): #For every device if there is at least 1 connected
 			for i, dev in enumerate(devs):
 				if(device is None or device is i):
 				    readings.append({'device': i,
 				                     'c': dev.get_temperature(),
 				                     'f': dev.get_temperature(format="fahrenheit"),
-				                     'name': config[i]
+				                     'name': dev_info[i]['name']
 				                     })
-		else: #Output a dummy value if no devices are connected
+		else: #Output a dummy value (for two fake devices) if no devices are connected
 		    readings.append({'device': 0,
 		                     'c': 20,
 		                     'f': 70,
-		                     'name': config[0]
+		                     'name': dev_info[0]['name']
 		                    })
 		    readings.append({'device': 1,
 		                     'c': 10,
 		                     'f': 45,
-		                     'name': config[1]
-		                    })	
+		                     'name': dev_info[1]['name']
+		                    })
+
 	except: #Sometimes the Python driver experiences a kernel detatchment error...
 		get_temperatures() #So try until we get it (this is probably dangerous!)
 	finally:
@@ -123,9 +127,6 @@ def log_temperatures():
 
 log_temperatures() #Log the temperatures at start time
 logging_init() #Then do it at our defined interval
-
-def getConfig():
-	return yaml.load(file(os.path.dirname(os.path.realpath(__file__)) + '/config.yaml'))
 
 #Only execute when called from the terminal
 if __name__ == '__main__':
