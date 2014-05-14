@@ -171,3 +171,30 @@ a, div {
 	font: 10px sans-serif;
 	text-anchor: middle;
 }
+
+
+/* Media  Queries */
+
+/*Tablet Portrait */
+@media only screen and (min-width: 768px) and (max-width: 959px){
+	h2{
+		font-size:25em;
+		margin-top: 40px;
+	}
+}
+
+/*Mobile*/
+@media only screen and (max-width: 767px){
+	h2{
+		font-size:18em;
+		margin-top:60px;
+	}
+}
+
+/*Even more mobile!*/
+@media only screen and (max-width: 479px){
+	h2{
+		font-size:15em;
+		margin-top:80px;
+	}
+}
