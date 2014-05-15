@@ -122,9 +122,15 @@ window.onload = function() {
 			temperature = 0;
 			console.log("Fetching temperature");
 			$.get("/json", function(d) {
-				reading_f = parseInt(d.readings[current_device].f);
-				reading_c = parseInt(d.readings[current_device].c);
-				requestAnimationFrame(animate);
+				if(current_device in d.readings) {
+					reading_f = parseInt(d.readings[current_device].f);
+					reading_c = parseInt(d.readings[current_device].c);
+					requestAnimationFrame(animate);		
+				}
+				else {
+					console.error("Failed to get temperature from server");
+				}
+				
 			});
 		}
 
