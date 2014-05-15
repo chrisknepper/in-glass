@@ -4,6 +4,7 @@ window.onload = function() {
 
 	var current_device = 0; //Index of the thermometer we are interested in, defaults to the first (0th) one
 
+	//Event Listeners
 	$("#nav_button").on('click', function(e) {
 		e.preventDefault();
 		$("#nav").toggleClass('visible');
@@ -18,7 +19,7 @@ window.onload = function() {
 		e.preventDefault();
 		current_device = $(e.target).data("device");
 		$("#device_picker").text($(e.target).text());
-		getTemperature();
+		handleDevicePick();
 	});
 
 	if($("#settings").length) {
@@ -132,65 +133,87 @@ window.onload = function() {
 
 	if($("#chart").length) {
 
-		function generateDateURL(year, month, day) {
-			return "/json/0/" + String(year) + "/" + String(month) + "/" + String(day); 
+		function generateDateURL(device, year, month, day) {
+			return "/json/" + String(device) + "/" + String(year) + "/" + String(month) + "/" + String(day); 
 		}
 
-		//Graphing Functionality
-		var margin = {top: 20, right: 30, bottom: 30, left: 40},
-		    width = 960 - margin.left - margin.right,
-		    height = 500 - margin.top - margin.bottom;
+		function graphTemperature() {
 
-		var x = d3.scale.ordinal()
-		    .rangeRoundBands([0, width], .1);
+			$("#chart").empty(); //Clear the chart from any previous graphings
 
-		var y = d3.scale.linear()
-		    .range([height, 0]);
+			//Graphing Functionality
+			var margin = {top: 20, right: 30, bottom: 30, left: 40},
+			    width = 960 - margin.left - margin.right,
+			    height = 500 - margin.top - margin.bottom;
 
-		var xAxis = d3.svg.axis()
-		    .scale(x)
-		    .orient("bottom");
+			var x = d3.scale.ordinal()
+			    .rangeRoundBands([0, width], .1);
 
-		var yAxis = d3.svg.axis()
-		    .scale(y)
-		    .orient("left");
+			var y = d3.scale.linear()
+			    .range([height, 0]);
 
-		var chart = d3.select("#chart")
-		    .attr("width", width + margin.left + margin.right)
-		    .attr("height", height + margin.top + margin.bottom)
-		 	.append("g")
-		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			var xAxis = d3.svg.axis()
+			    .scale(x)
+			    .orient("bottom");
 
-		var current = new Date();
-		var year = current.getFullYear();
-		var month = current.getMonth() + 1;
-		var day = current.getDate();
-		var url = generateDateURL(year, month, day);
+			var yAxis = d3.svg.axis()
+			    .scale(y)
+			    .orient("left");
 
-		console.log(url);
+			var chart = d3.select("#chart")
+			    .attr("width", width + margin.left + margin.right)
+			    .attr("height", height + margin.top + margin.bottom)
+			 	.append("g")
+			    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-		d3.json(url, function(error, json) {
-			data = json.logs;
-			x.domain(data.map(function(d) { return d.hour; }));
-			y.domain([0, d3.max(data, function(d) { return d.f; })]);
+			var current = new Date();
+			var year = current.getFullYear();
+			var month = current.getMonth() + 1;
+			var day = current.getDate();
+			var url = generateDateURL(current_device, year, month, day);
 
-			chart.append("g")
-				.attr("class", "x axis")
-				.attr("transform", "translate(0," + height + ")")
-				.call(xAxis);
+			console.log(url);
 
-			chart.append("g")
-				.attr("class", "y axis")
-				.call(yAxis);
+			d3.json(url, function(error, json) {
+				data = json.logs;
+				x.domain(data.map(function(d) { return d.hour; }));
+				var range = d3.extent(data, function(d) { return d.f; }); //Puts the min and max of the data set, respectively, into an array
+				if(range[0] === range[1]) { //D3 won't show graph anything if the min and max are the same
+					range[0] -= 10; //So let's deal with that
+				}
+				y.domain([range[0], range[1]]);
+				chart.append("g")
+					.attr("class", "x axis")
+					.attr("transform", "translate(0," + height + ")")
+					.call(xAxis);
 
-			chart.selectAll(".bar")
-				.data(data)
-				.enter().append("rect")
-				.attr("class", "bar")
-				.attr("x", function(d) { return x(d.hour); })
-				.attr("y", function(d) { return y(d.f); })
-				.attr("height", function(d) { return height - y(d.f); })
-				.attr("width", x.rangeBand());
-		});
+				chart.append("g")
+					.attr("class", "y axis")
+					.call(yAxis);
+
+				chart.selectAll(".bar")
+					.data(data)
+					.enter().append("rect")
+					.attr("class", "bar")
+					.attr("x", function(d) { return x(d.hour); })
+					.attr("y", function(d) { return y(d.f); })
+					.attr("height", function(d) { return height - y(d.f); })
+					.attr("width", x.rangeBand());
+			});
+		}
+
+		graphTemperature();
+
+	}
+
+	//We do something different when the user picks a device from the list depending on the page we're on
+	function handleDevicePick() {
+		
+		if($("#settings").length) { //If we're on the main (current temperature) page
+			getTemperature();
+		}
+		else if($("#chart").length) { //If we're on the graph page
+			graphTemperature();
+		}
 	}
 }
