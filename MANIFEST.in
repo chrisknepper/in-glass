@@ -1,0 +1,7 @@
+include LICENSE
+include README.md
+recursive-include inglass/static *
+recursive-include inglass/templates *
+recursive-include inglass/logs *
+recursive-include inglass *.yaml
+recursive-exclude inglass *.pyc

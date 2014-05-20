@@ -47,7 +47,7 @@ def json_history_output(device, year, month, day):
 
 #A log for 4-20-2014 for the 0th sensor should look like logs/0/2014/4/20.csv
 def build_log_path(device, year, month, day):
-	return 'logs/' + str(device) + '/' + str(year) + '/' + str(month) + '/' + str(day) + '.csv'
+	return os.path.dirname(os.path.realpath(__file__)) + '/logs/' + str(device) + '/' + str(year) + '/' + str(month) + '/' + str(day) + '.csv'
 
 def load_config_file():
 	return yaml.load(file(os.path.dirname(os.path.realpath(__file__)) + '/config.yaml'))
@@ -128,6 +128,9 @@ def log_temperatures():
 log_temperatures() #Log the temperatures at start time
 logging_init() #Then do it at our defined interval
 
+def startup():
+	app.run(host='0.0.0.0', port=9000, debug=True, use_reloader=False)
+
 #Only execute when called from the terminal
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', port=9000, debug=True, use_reloader=False)
+	startup()

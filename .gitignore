@@ -1,5 +1,6 @@
 # in-glass logging files
 logs/*
+inglass/logs/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
